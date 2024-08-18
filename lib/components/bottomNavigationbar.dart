@@ -4,7 +4,8 @@ import 'package:test_ui/routes/routes.dart';
 import 'package:test_ui/utils/constants.dart';
 
 class BottomNavigationBarCustom extends StatefulWidget {
-  const BottomNavigationBarCustom({super.key});
+  int selectedIndex;
+  BottomNavigationBarCustom({super.key, required this.selectedIndex});
 
   @override
   State<BottomNavigationBarCustom> createState() =>
@@ -12,8 +13,6 @@ class BottomNavigationBarCustom extends StatefulWidget {
 }
 
 class _BottomNavigationBarCustomState extends State<BottomNavigationBarCustom> {
-  int selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,37 +22,60 @@ class _BottomNavigationBarCustomState extends State<BottomNavigationBarCustom> {
         children: [
           buildNavItem(
               0,
-              selectedIndex == 0 ? Icons.home_filled : Icons.home_outlined,
-              'Home',
-              () {}),
-          buildNavItem(1, Icons.search_outlined, 'Search', () {}),
+              widget.selectedIndex == 0
+                  ? Icons.home_filled
+                  : Icons.home_outlined,
+              'Home', () {
+            setState(() {
+              widget.selectedIndex = 0;
+            });
+            Navigator.pushNamed(context, RouteName.mainfeed);
+          }),
+          buildNavItem(1, Icons.search_outlined, 'Search', () {
+            setState(() {
+              widget.selectedIndex = 1;
+            });
+          }),
           buildNavItem(2, Icons.add_box_outlined, 'Create', () {
-            // Navigator.pushNamed(context, RouteName.createpost);
-            // print('hello');
+            setState(() {
+              widget.selectedIndex = 2;
+            });
+            Navigator.pushNamed(context, RouteName.createpost, arguments: {
+              'resetIndex': () {
+                setState(() {
+                  widget.selectedIndex = 0;
+                });
+              },
+              'imagePath': ''
+            });
           }),
           buildNavItemWithImage(
-              3, 'assets/images/chats_icon.png', 'Chat', () {}),
-          buildNavItem(4, Icons.person_2_outlined, 'Profile', () {}),
+              3,
+              widget.selectedIndex == 3
+                  ? 'assets/images/chats_icon_selected.png'
+                  : 'assets/images/chats_icon.png',
+              'Chat', () {
+            setState(() {
+              widget.selectedIndex = 3;
+            });
+            Navigator.pushNamed(context, RouteName.chat);
+          }),
+          buildNavItem(4, Icons.person_2_outlined, 'Profile', () {
+            setState(() {
+              widget.selectedIndex = 4;
+            });
+          }),
         ],
       ),
     );
   }
 
   Widget buildNavItem(
-      int index, IconData icon, String label, Function onPressed) {
-    bool isSelected = selectedIndex == index;
+      int index, IconData icon, String label, VoidCallback onPressed) {
+    bool isSelected = widget.selectedIndex == index;
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedIndex = index;
-        });
-        if (index == 2) {
-          Navigator.pushNamed(context, RouteName.createpost);
-        } else if (index == 3) {
-          Navigator.pushNamed(context, RouteName.chat);
-        }
-      },
+      onTap: onPressed,
       child: Container(
         height: 70,
         width: 60,
@@ -84,15 +106,11 @@ class _BottomNavigationBarCustomState extends State<BottomNavigationBarCustom> {
   }
 
   Widget buildNavItemWithImage(
-      int index, String imagePath, String label, Function onPressed) {
-    bool isSelected = selectedIndex == index;
+      int index, String imagePath, String label, VoidCallback onPressed) {
+    bool isSelected = widget.selectedIndex == index;
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedIndex = index;
-        });
-      },
+      onTap: onPressed,
       child: Container(
         height: 70,
         width: 60,
