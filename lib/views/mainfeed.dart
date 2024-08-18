@@ -85,6 +85,7 @@ class _MainFeedState extends State<MainFeed> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.secondarytextColor,
         elevation: 0,
         title: Row(
@@ -182,7 +183,9 @@ class _MainFeedState extends State<MainFeed> with TickerProviderStateMixin {
           )
         ],
       ),
-      bottomNavigationBar: BottomNavigationBarCustom(),
+      bottomNavigationBar: BottomNavigationBarCustom(
+        selectedIndex: 0,
+      ),
     );
   }
 }
