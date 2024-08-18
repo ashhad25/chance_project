@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_ui/views/camera_screen.dart';
 import 'package:test_ui/views/chat.dart';
 import 'package:test_ui/views/chatpreview.dart';
 import 'package:test_ui/views/createpost.dart';
@@ -13,14 +14,17 @@ class AppRoutes {
       case RouteName.createpost:
         return MaterialPageRoute(
             builder: (context) => CreatePost(
-                // data: settings.arguments as Map,
+                  data: settings.arguments as Map,
                 ));
 
       case RouteName.chat:
         return MaterialPageRoute(builder: (context) => Chat());
 
-      case RouteName.chat:
+      case RouteName.chatpreview:
         return MaterialPageRoute(builder: (context) => ChatPreview());
+
+      case RouteName.cameraScreen:
+        return MaterialPageRoute(builder: (context) => CameraScreen());
 
       default:
         return MaterialPageRoute(
@@ -38,4 +42,5 @@ class RouteName {
   static const createpost = 'screen_two';
   static const chat = 'screen_three';
   static const chatpreview = 'screen_four';
+  static const cameraScreen = 'screen_five';
 }
